@@ -1,0 +1,20 @@
+{
+  "name": "meli-challenge",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently --kill-others-on-fail \"npm run dev --workspace=server\" \" npm run dev --workspace=client\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "standard": "16.0.3"
+  }
+}
