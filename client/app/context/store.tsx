@@ -13,26 +13,49 @@ import {
   useEffect,
 } from "react";
 
-type DataType = {};
+interface Item {
+  author: {
+    name: string;
+    lastname: string;
+  };
+  categories: string[];
+  item: {
+    title: string;
+    condition: string;
+    free_shipping: boolean;
+    id: string;
+    location: string;
+    picture: string;
+    price: {
+      amount: number;
+      currency: string;
+      decimals: number;
+    };
+  };
+}
 
 interface ContextProps {
-  items: any;
+  items: Item[];
+  setItems: Dispatch<SetStateAction<string>>;
   setSearchInput: Dispatch<SetStateAction<string>>;
-  searchInput: any;
-  itemSelected: any;
+  searchInput: string;
+  itemSelected: Item | undefined;
   setItemSelected: Dispatch<SetStateAction<string>>;
-  idSelected: string;
+  idSelected: string | undefined;
   setIdSelected: Dispatch<SetStateAction<string>>;
+  breadcrumbs: string[];
 }
 
 const GlobalContext = createContext<ContextProps>({
   items: [],
   setSearchInput: (): string => "",
+  setItems: ():Item[] => [],
   searchInput: "",
-  itemSelected: "",
-  setItemSelected: (): string => "",
-  idSelected: "",
+  itemSelected: undefined,
+  setItemSelected: (): Item => [],
+  idSelected: undefined,
   setIdSelected: (): string => "",
+  breadcrumbs: [],
 });
 
 export const GlobalContextProvider = ({
@@ -40,10 +63,11 @@ export const GlobalContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [items, setItems] = useState(null);
+  const [items, setItems] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const [itemSelected, setItemSelected] = useState("");
-  const [idSelected, setIdSelected] = useState("");
+  const [itemSelected, setItemSelected] = useState(undefined);
+  const [idSelected, setIdSelected] = useState(undefined);
+  const [breadcrumbs, setBreadcrumbs] = useState([]);
 
   const router = useRouter();
   const params = useSearchParams();
@@ -54,7 +78,9 @@ export const GlobalContextProvider = ({
       const response = await axios({
         url: `http://localhost:3001/api/items?q=${searchInput}`,
       });
-      setItems(response.data);
+      const items = response.data as Item[];
+      setItems(items);
+      setBreadcrumbs(items[0].item.categories);
     } catch (error) {
       console.log(error);
     }
@@ -72,12 +98,13 @@ export const GlobalContextProvider = ({
   };
 
   useEffect(() => {
-    const searchFromQueryParams = params.get("search");
+    const searchFromQueryParams = params.gets("search");
     const regex = /\/items\//;
-    console.log(pathname)
+    console.log(pathname);
 
-    if (searchFromQueryParams) setSearchInput(searchFromQueryParams)
-    else if (pathname.includes('/items/')) setIdSelected(pathname.replace(regex,""))
+    if (searchFromQueryParams) setSearchInput(searchFromQueryParams);
+    else if (pathname.includes("/items/"))
+      setIdSelected(pathname.replace(regex, ""));
   }, []);
 
   useEffect(() => {
@@ -87,6 +114,7 @@ export const GlobalContextProvider = ({
   }, [searchInput]);
 
   useEffect(() => {
+    if (!idSelected) return;
     fetchItem();
     router.replace(`/items/${idSelected}`);
   }, [idSelected]);
@@ -95,12 +123,15 @@ export const GlobalContextProvider = ({
     <GlobalContext.Provider
       value={{
         items,
+        setItems,
         setSearchInput,
         searchInput,
         setItemSelected,
         itemSelected,
         idSelected,
         setIdSelected,
+
+        breadcrumbs,
       }}
     >
       {children}
