@@ -1,12 +1,11 @@
 import axios from "axios";
-import {
-  BaseUrl,
-  ML_CURRENCIES_BY_ID,
-  ML_ITEMS_BY_CATEGORY,
-  ML_ITEM_BY_ID,
-  ML_ITEM_DESCRIPTION_BY_ID,
-  ML_SELLERS_BY_ID,
-} from "../constants";
+
+const BaseUrl = "https://api.mercadolibre.com/sites/MLA/search?q=";
+const ML_SELLERS_BY_ID = "https://api.mercadolibre.com/users";
+const ML_ITEMS_BY_CATEGORY = "https://api.mercadolibre.com/categories";
+const ML_CURRENCIES_BY_ID = "https://api.mercadolibre.com/currencies";
+const ML_ITEM_BY_ID = "https://api.mercadolibre.com/items/";
+const ML_ITEM_DESCRIPTION_BY_ID = "https://api.mercadolibre.com/items/";
 
 const getCategorieById = (id) => axios.get(`${ML_ITEMS_BY_CATEGORY}/${id}`);
 const getCurrencyById = (id) => axios.get(`${ML_CURRENCIES_BY_ID}/${id}`);
