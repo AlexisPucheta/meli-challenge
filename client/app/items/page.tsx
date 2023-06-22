@@ -1,39 +1,30 @@
-'use client'
-import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from "react"
-import axios from 'axios'
+"use client";
+import HorizontalCard from "../components/cards/horizontalCard";
+import Breadcrumbs from "../components/breadcrumbs/breadcrumbs";
+import { useGlobalContext } from "../context/store";
 
-export default function Items(){
-    const searchParams = useSearchParams();
-    const search = searchParams.get('search')
-    const [list, setList] = useState([]);
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await axios({
-            url: `http://localhost:3001/api/items?q=${search}`,
-          });
-  
-          setList(response.data);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-  
-      fetchData();
-    }, [setList]);
-    let elements:JSX.Element[] = list.map((e) => {
-    return (<li key={e.item.id}>
-        <p>
-            {e.item.title}
-            </p>
-            <a href={`/items/${e.item.id}`}>link</a>
-    </li>)
+export default function Items() {
+  const { items } = useGlobalContext();
+
+  let cards: JSX.Element[] = items.map((e: any, i: number) => {
+    return (
+      <>
+        <HorizontalCard item={e} key={e.item.id} id={e.item.id} />
+        {i < 3 && <div className="h-px bg-[#EEEEEE] mx-[5%]"></div>}
+      </>
+    );
   });
-    return (<>
-    <h1>home</h1>
-    <ul>
-    {elements}
-    </ul>
-    </>)
+  return (
+    <>
+      {items && (
+        <div>
+          {items[0]?.categories && (
+            <Breadcrumbs categories={items[0].categories} />
+          )}
+
+          <div className="rounded-t-[4px] bg-white">{cards}</div>
+        </div>
+      )}
+    </>
+  );
 }
