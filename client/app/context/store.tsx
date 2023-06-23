@@ -98,10 +98,8 @@ export const GlobalContextProvider = ({
   };
 
   useEffect(() => {
-    const searchFromQueryParams = params.gets("search");
+    const searchFromQueryParams = params.get("search");
     const regex = /\/items\//;
-    console.log(pathname);
-
     if (searchFromQueryParams) setSearchInput(searchFromQueryParams);
     else if (pathname.includes("/items/"))
       setIdSelected(pathname.replace(regex, ""));
