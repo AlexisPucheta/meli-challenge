@@ -1,12 +1,13 @@
 
 # MELI CHALLENGE
 
-Coding challenge para la posicion de FE developer en la compania Mercado Libre.
+
+Coding Challenge for Front-End Developer Position at Mercado Libre
 
 
 ## Appendix
 
-Este repositorio se trata de un monorepo, donde convive el Front end y el back end.
+This repository is a monorepo where the front-end and back-end coexist.
 
 
 ## Authors
@@ -16,7 +17,7 @@ Este repositorio se trata de un monorepo, donde convive el Front end y el back e
 
 ## Installation
 
-Al tratarse de un monorepo, los node_modules se intalaran en el root, tanto para el proyecto client como server.
+Since it is a monorepo, the node_modules will be installed in the root directory for both the client and server projects.
 
 ```bash
   npm install
@@ -24,25 +25,32 @@ Al tratarse de un monorepo, los node_modules se intalaran en el root, tanto para
     
 ## Deployment
 
-Para correr tanto el client como el servidor basta con el siguiente script
+To run both the client and the server, you can simply use the following script:
 
 ```bash
   npm run start
 ```
+and then go to 
 
-Si quisieramos correr solo el cliente.
+http://localhost:3000/
+
+
+If you want to run only the client, you can use the following script:
 
 ```bash
   cd client
   npm run dev
 ```
+http://localhost:3000/
 
-Si quisieramos correr solo el server.
+
+If you want to run only the server, you can use the following script:
 
 ```bash
   cd server
   npm run dev
 ```
+http://localhost:3001/
 ## Documentation
 This documentation provides an overview of the approach used to solve the coding challenge.
 
